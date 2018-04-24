@@ -1,0 +1,31 @@
+// 代码检查，主要使用 findbugs 与 pmd
+
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+
+// findbugs 配置项
+// 配置项参考: https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.FindBugsExtension.html
+findbugs {
+    ignoreFailures = true
+    toolVersion = "3.0.1"
+    sourceSets = [sourceSets.main]
+    reportsDir = file("$project.buildDir/reports/findbugs")
+    reportLevel = "high"
+    effort = "max"
+}
+// for findbugs 产生html
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+// pmd 配置项
+// 配置项参考: https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.Pmd.html
+pmd {
+    ignoreFailures = true
+    sourceSets = [sourceSets.main]
+    reportsDir = file("$project.buildDir/reports/pmd")
+    ruleSets = [ "java-basic", "java-strings", "java-braces" ]
+}

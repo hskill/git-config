@@ -1,0 +1,57 @@
+group 'info.ideatower.springboot'
+version '0.1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply from: 'codecheck.gradle'
+// apply from: 'publishing.gradle'
+
+sourceCompatibility = 1.8
+
+//解决乱码
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+// 注意定义 maven 仓库的地址
+repositories {
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+    mavenCentral()
+}
+
+// 日志 排除冲突
+configurations.all {
+    exclude module: "logback-classic"
+    exclude module: 'spring-boot-starter-logging'
+}
+
+// gradle build --refresh-dependencies 强制使用更新时，可以加入命令参数，对snapshot包有较好作用
+dependencies {
+
+    compile 'com.google.guava:guava:17.0'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+
+    // logging
+    compile 'org.slf4j:slf4j-api:1.7.7'
+
+    compile 'org.springframework:spring-core:4.3.6.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter:1.5.3.RELEASE+'
+    compile'org.springframework.boot:spring-boot-starter-web:1.5.3.RELEASE+'
+
+    // yaml 解析
+    compile 'org.yaml:snakeyaml:1.17'
+
+    // apache commons 加密库
+    compile 'commons-codec:commons-codec:1.9'
+
+    // for lombok
+    compile 'org.projectlombok:lombok:1.16.18'
+
+    // jgit git操作
+    compile 'org.eclipse.jgit:org.eclipse.jgit:4.10.0.201712302008-r'
+
+    // 测试
+    testCompile 'junit:junit:4.12+'
+    testCompile 'org.assertj:assertj-core:3.6.2+'
+    testCompile 'org.springframework:spring-test:4.3.6.RELEASE'
+    testCompile 'org.springframework.boot:spring-boot-test:1.5.3.RELEASE+'
+
+}
